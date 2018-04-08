@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, StyleSheet, TextInput, View } from 'react-native';
+import ListItem from './src/components/ListItem/ListItem';
 
 export default class App extends React.Component {
   state = {
@@ -15,7 +16,7 @@ export default class App extends React.Component {
 
   placeSubmitHandler = () => {
     if (this.state.placeName.trim() === '') { return; }
-    
+
     this.setState(prevState => {
       return {
         places: prevState.places.concat(this.state.placeName)
@@ -25,7 +26,7 @@ export default class App extends React.Component {
   
   render() {
     const placesOutput = this.state.places.map((place, i) => (
-      <Text key={i}>{place}</Text>
+      <ListItem key={i} placeName={place} />
     ));
 
     return (
@@ -43,7 +44,7 @@ export default class App extends React.Component {
             title='Add'
           />
         </View>
-        <View>{placesOutput}</View>
+        <View style={styles.listContainer}>{placesOutput}</View>
       </View>
     );
   }
@@ -61,6 +62,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    width: '100%'
+  },
+  listContainer: {
     width: '100%'
   },
   placeInput: {
