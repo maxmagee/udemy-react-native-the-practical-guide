@@ -1,18 +1,10 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import List from './src/components/List/List';
-import ItemInput from './src/components/ItemInput/ItemInput';
+import PlaceInput from './src/components/PlaceInput/PlaceInput';
+import PlaceList from './src/components/PlaceList/PlaceList';
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.placeNameChangedHandler = this.placeNameChangedHandler.bind(this);
-    this.placeSubmitHandler = this.placeSubmitHandler.bind(this);
-  }
-
   state = {
-    placeName: '',
     places: []
   }
 
@@ -22,12 +14,10 @@ export default class App extends React.Component {
     });
   }
 
-  placeSubmitHandler = () => {
-    if (this.state.placeName.trim() === '') { return; }
-
+  placeAddedHandler = (placeName) => {
     this.setState(prevState => {
       return {
-        places: prevState.places.concat(prevState.placeName)
+        places: prevState.places.concat(placeName)
       };
     });
   }
@@ -35,12 +25,10 @@ export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <ItemInput 
-          placeNameChangedHandler={this.placeNameChangedHandler}
-          placeSubmitHandler={this.placeSubmitHandler}
-          value={this.state.placeName}
+        <PlaceInput
+          onPlaceAdded={this.placeAddedHandler}
         />
-        <List places={this.state.places} />
+        <PlaceList places={this.state.places} />
       </View>
     );
   }
