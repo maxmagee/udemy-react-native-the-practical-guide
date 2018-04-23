@@ -12,18 +12,18 @@ class App extends React.Component {
     this.props.onDeselectPlace();
   }
 
-  placeNameChangedHandler = (val) => {
-    this.setState({
-      placeName: val
-    });
-  }
-
   placeAddedHandler = (placeName) => {
     this.props.onAddPlace(placeName);
   }
 
   placeDeletedHandler = () => {
     this.props.onDeletePlace();
+  }
+
+  placeNameChangedHandler = (val) => {
+    this.setState({
+      placeName: val
+    });
   }
   
   placeSelectedHandler = key => {
