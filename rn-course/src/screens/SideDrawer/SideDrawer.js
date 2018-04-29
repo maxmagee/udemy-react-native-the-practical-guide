@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { 
+    Dimensions,
+    Platform,
+    StyleSheet, 
+    Text, 
+    TouchableOpacity, 
+    View 
+} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -15,7 +22,7 @@ class SideDrawerScreen extends Component {
                 <TouchableOpacity>
                     <View style={styles.drawerItem}>
                         <Icon 
-                            name='ios-log-out' 
+                            name={Platform.OS === 'android' ? 'md-log-out' : 'ios-log-out'}
                             style={styles.drawerIconItem} 
                             size={30} 
                             color='#aaa' 
