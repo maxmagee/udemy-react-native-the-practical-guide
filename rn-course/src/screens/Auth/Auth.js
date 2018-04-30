@@ -17,19 +17,25 @@ import MainText from '../../components/UI/MainText/MainText';
 class AuthScreen extends Component {
     constructor(props) {
         super(props);
-        Dimensions.addEventListener('change', () => {
-            this.setState({
-                viewMode: Dimensions.get('window').height > 500 ? 'portrait' : 'landscape'
-            });
-        });
+        Dimensions.addEventListener('change', this.updateStyles);
     }
 
     state = {
         viewMode: Dimensions.get('window').height > 500 ? 'portrait' : 'landscape'
     }
     
+    componentWillUnmount() {
+        Dimensions.removeEventListener('change', this.updateStyles);
+    }
+
     loginHandler = () => {
         startMainTabs();
+    }
+
+    updateStyles = (dims) => {
+        this.setState({
+            viewMode: dims.window.height > 500 ? 'portrait' : 'landscape'
+        });
     }
     
     render() {
