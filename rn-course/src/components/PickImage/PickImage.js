@@ -1,17 +1,37 @@
 import React, { Component } from 'react';
-import { Button, StyleSheet, Image, View } from 'react-native';
-
-import imagePlaceholder from '../../assets/background.jpg';
+import { Button, Platform, StyleSheet, Image, View } from 'react-native';
+import RNImagePicker from 'react-native-image-picker';
+import ImagePickerAndroidWrapper from '../../utility/ImagePicker';
 
 class PickImage extends Component {
+    state = {
+        pickedImage: null
+    }
+
+    pickImageHandler = () => {
+        const ImagePicker = Platform.OS === 'ios' ? RNImagePicker : ImagePickerAndroidWrapper;
+
+        ImagePicker.showImagePicker({ title: 'Pick an Image' }, response => {
+            if (response.didCancel) {
+                console.log('User cancelled!');
+            } else if (response.error) {
+                console.error('Error', response.error);
+            } else {
+                this.setState({
+                    pickedImage: { uri: response.uri }
+                });
+            }
+        });
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.placeholder}>
-                    <Image source={imagePlaceholder} style={styles.previewImage} />
+                    <Image source={this.state.pickedImage} style={styles.previewImage} />
                 </View>
                 <View style={styles.button}>
-                    <Button title='Pick Image' onPress={() => alert('pick image')} />
+                    <Button title='Pick Image' onPress={this.pickImageHandler} />
                 </View>
             </View>
         );
