@@ -24,7 +24,10 @@ class PickImage extends Component {
                 // Since setState can be async, we can't reliably do the following
                 // this.props.onImagePicked(this.state.pickedImage);
                 // Instead we need to do this:
-                this.props.onImagePicked({ uri: response.uri });
+                this.props.onImagePicked({ 
+                    uri: response.uri, 
+                    base64: response.data 
+                });
             }
         });
     }
