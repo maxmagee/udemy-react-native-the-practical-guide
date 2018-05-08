@@ -20,6 +20,11 @@ class PickImage extends Component {
                 this.setState({
                     pickedImage: { uri: response.uri }
                 });
+
+                // Since setState can be async, we can't reliably do the following
+                // this.props.onImagePicked(this.state.pickedImage);
+                // Instead we need to do this:
+                this.props.onImagePicked({ uri: response.uri });
             }
         });
     }
