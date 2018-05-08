@@ -1,4 +1,4 @@
-import {Platform, PermissionsAndroid} from 'react-native';
+import { Platform, PermissionsAndroid } from 'react-native';
 import RNImagePicker from 'react-native-image-picker';
 
 /**
@@ -17,13 +17,14 @@ export default class ImagePicker {
      * @param error
      */
     static invokeError(callback, error) {
-        const response = {didCancel: false, error};
+        const response = { didCancel: false, error };
 
         callback(response);
     }
 
     /**
-     * Permissions helper - as react-native-image-picker does not really handle the new Android permissions system,
+     * Permissions helper - as react-native-image-picker does not 
+     * really handle the new Android permissions system,
      * we want to do a pre-check-and-request routine beforehand
      *
      * @param permissions
@@ -34,8 +35,7 @@ export default class ImagePicker {
         return new Promise((resolve, reject) => {
             if (Platform.OS !== 'android') {
                 resolve();
-            }
-            else {
+            } else {
                 const permissionsPromises = Promise.all(permissions.map(PermissionsAndroid.check));
 
                 permissionsPromises
@@ -44,23 +44,25 @@ export default class ImagePicker {
 
                         if (granted) {
                             resolve();
-                        }
-                        else {
+                        } else {
                             PermissionsAndroid
                                 .requestMultiple(permissions)
-                                .then(results => {
-                                    const granted = !(Object.values(results).some(value => value !== 'granted'));
+                                .then(permissionResults => {
+                                    const permissionGranted = !(
+                                        Object
+                                            .values(permissionResults)
+                                            .some(value => value !== 'granted')
+                                    );
 
-                                    if (granted) {
+                                    if (permissionGranted) {
                                         resolve();
-                                    }
-                                    else {
+                                    } else {
                                         const errorMessage = (
-                                            options.hasOwnProperty('permissionDenied') &&
+                                            Object.prototype.hasOwnProperty.call(options, 'permissionDenied') &&    // eslint-disable-line max-len
                                             typeof options.permissionDenied.text === 'string'
                                         ) ?
                                             options.permissionDenied.text :
-                                            'To be able to take pictures with your camera and choose images from your library.';
+                                            'To be able to take pictures with your camera and choose images from your library.';    // eslint-disable-line max-len
 
                                         reject(errorMessage);
                                     }
@@ -93,7 +95,7 @@ export default class ImagePicker {
             })
             .catch(error => ImagePicker.invokeError(callback, error))
             .done();
-    };
+    }
 
     /**
      * Overrides react-native-image-picker launchCamera()
@@ -110,7 +112,7 @@ export default class ImagePicker {
             })
             .catch(error => ImagePicker.invokeError(callback, error))
             .done();
-    };
+    }
 
     /**
      * Overrides react-native-image-picker launchImageLibrary()
@@ -120,8 +122,8 @@ export default class ImagePicker {
      * @param callback
      */
     static launchImageLibrary(options, callback) {
-        // Warning: we need to request both permissions because react-native-image-picker assumes (wrongly) that
-        // both are needed to launch the library.
+        // Warning: we need to request both permissions because react-native-image-picker 
+        // assumes (wrongly) that both are needed to launch the library.
         ImagePicker
             .checkAndRequest([
                 PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
@@ -132,5 +134,5 @@ export default class ImagePicker {
             })
             .catch(error => ImagePicker.invokeError(callback, error))
             .done();
-    };
+    }
 }
