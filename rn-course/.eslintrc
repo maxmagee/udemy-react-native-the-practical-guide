@@ -5,6 +5,7 @@
         "no-console": "warn"
     },
     "globals": {
-        "navigator": false
+        "navigator": false,
+        "fetch": false
     }
 }
