@@ -12,7 +12,10 @@ export const addPlace = (placeName, location, image) => {
                 image: image.base64
             })
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.log(err);
+            alert('Something went wrong, please try again!');
+        })
         .then(res => res.json())
         .then(parsedRes => {
             const placeData = {
@@ -25,7 +28,10 @@ export const addPlace = (placeName, location, image) => {
                 body: JSON.stringify(placeData)
             });
         })
-        .catch(err => console.error(err))
+        .catch(err => {
+            console.error(err);
+            alert('Something went wrong, please try again!');
+        }) 
         .then(res => res.json())
         .then(parsedRes => {
             console.log(parsedRes);
