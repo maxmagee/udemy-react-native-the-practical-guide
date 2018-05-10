@@ -1,4 +1,4 @@
-import { ADD_PLACE, DELETE_PLACE } from './actionTypes';
+import { DELETE_PLACE, SET_PLACES } from './actionTypes';
 import { uiStartLoading, uiStopLoading } from './index';
 
 // this one is using ES6 syntax of placeName: placeName  -->  placeName
@@ -44,5 +44,36 @@ export const deletePlace = (placeKey) => {
     return {
         type: DELETE_PLACE,
         placeKey
+    };
+};
+
+export const getPlaces = () => {
+    return dispatch => {
+        return fetch('https://awesome-places-1525473356114.firebaseio.com/places.json')
+            .catch(err => {
+                alert('Something went wrong, sorry :/');
+                console.log(err);
+            })
+            .then(res => res.json())
+            .then(parsedRes => {
+                const places = [];
+                for (let key in parsedRes) {    //eslint-disable-line 
+                    places.push({
+                        ...parsedRes[key],
+                        key,
+                        image: {
+                            uri: parsedRes[key].image
+                        }
+                    });
+                }
+                dispatch(setPlaces(places));
+            });
+    };
+};
+
+export const setPlaces = places => {
+    return {
+        type: SET_PLACES,
+        places
     };
 };
