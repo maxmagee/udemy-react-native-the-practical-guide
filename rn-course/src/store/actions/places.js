@@ -1,4 +1,4 @@
-import { DELETE_PLACE, SET_PLACES } from './actionTypes';
+import { REMOVE_PLACE, SET_PLACES } from './actionTypes';
 import { uiStartLoading, uiStopLoading } from './index';
 
 // this one is using ES6 syntax of placeName: placeName  -->  placeName
@@ -41,9 +41,19 @@ export const addPlace = (placeName, location, image) => {
 };
 
 export const deletePlace = (placeKey) => {
-    return {
-        type: DELETE_PLACE,
-        placeKey
+    return dispatch => {
+        dispatch(removePlace(placeKey));
+        return fetch(`https://awesome-places-1525473356114.firebaseio.com/places/${placeKey}.json`, {
+            method: 'DELETE'
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Something went wrong, please try again!');
+        }) 
+        .then(res => res.json())
+        .then(() => {
+            console.log(`${placeKey} deleted!`);
+        });
     };
 };
 
@@ -68,6 +78,13 @@ export const getPlaces = () => {
                 }
                 dispatch(setPlaces(places));
             });
+    };
+};
+
+export const removePlace = key => {
+    return {
+        type: REMOVE_PLACE,
+        key
     };
 };
 
